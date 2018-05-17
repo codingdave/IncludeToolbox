@@ -83,6 +83,34 @@ namespace VCProjectUtils.VS15
             return compilerTool;
         }
 
+        public static VCConfiguration GetConfigurationTool(Project project, out string reasonForFailure)
+        {
+            VCProject vcProject = project?.Object as VCProject;
+            if (vcProject == null)
+            {
+                reasonForFailure = "Failed to retrieve VCConfiguration since project is not a VCProject.";
+                return null;
+            }
+            VCConfiguration activeConfiguration = vcProject.ActiveConfiguration;
+            var tools = activeConfiguration.Tools;
+            VCConfiguration configurationTool = null;
+            foreach (var tool in activeConfiguration.Tools)
+            {
+                configurationTool = tool as VCConfiguration;
+                if (configurationTool != null)
+                    break;
+            }
+
+            if (configurationTool == null)
+            {
+                reasonForFailure = "Couldn't file a VCConfiguration in VC++ Project.";
+                return null;
+            }
+
+            reasonForFailure = "";
+            return configurationTool;
+        }
+
         public static VCLinkerTool GetLinkerTool(Project project, out string reasonForFailure)
         {
             VCProject vcProject = project?.Object as VCProject;
@@ -147,8 +175,18 @@ namespace VCProjectUtils.VS15
 
         public string GetCompilerSetting_PreprocessorDefinitions(Project project, out string reasonForFailure)
         {
-            VCCLCompilerTool compilerTool = GetCompilerTool(project, out reasonForFailure);
-            return compilerTool?.PreprocessorDefinitions;
+            VCCLCompilerTool compilerTool = GetCompilerTool(project, out reasonForFailure);            
+            var defines = compilerTool?.PreprocessorDefinitions;
+
+            //string reason2 = string.Empty;
+            //VCConfiguration projectConfiguration = GetConfigurationTool(project, out reason2);
+            //reasonForFailure += reason2;
+
+            //if (projectConfiguration.CharacterSet == charSet.charSetUnicode)
+            //{
+                defines += ";_UNICODE";
+            //}
+            return defines;
         }
 
         public TargetMachineType? GetLinkerSetting_TargetMachine(EnvDTE.Project project, out string reasonForFailure)
