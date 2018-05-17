@@ -101,7 +101,7 @@ namespace IncludeToolbox.IncludeWhatYouUse
                     }
                     else
                     {
-                        if(!string.IsNullOrWhiteSpace(line))
+                        if (!string.IsNullOrWhiteSpace(line))
                         {
                             currentTask.linesToAdd.Add(line);
                         }
@@ -184,7 +184,7 @@ namespace IncludeToolbox.IncludeWhatYouUse
                         }
                         edit.Insert(insertPosition, stringToInsert.ToString());
                     }
-                     
+
                     // Remove lines.
                     // It should safe to do that last since we added includes at the bottom, this way there is no confusion with the text snapshot.
                     {
@@ -333,8 +333,8 @@ namespace IncludeToolbox.IncludeWhatYouUse
                     Output.Instance.WriteLine(args.Data);
                     output += args.Data + "\n";
                 };
-                process.Start();
 
+                process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
                 process.WaitForExit();
