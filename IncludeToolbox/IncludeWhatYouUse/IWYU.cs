@@ -341,6 +341,7 @@ namespace IncludeToolbox.IncludeWhatYouUse
                 process.CancelOutputRead();
                 process.CancelErrorRead();
             }
+			output = Regex.Replace(output, @"#include <moduleworks_dummy.*?>.*?\n", "");
 
             return output;
         }
